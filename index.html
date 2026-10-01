@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="description" content="LeafCare AI - Instant plant disease detection and practical crop protection guidance specifically designed for farmers. Fast, simple, and mobile-friendly.">
+  <meta name="theme-color" content="#1b4332">
+  <title>LeafCare AI | Smart Plant Disease Detection for Farmers</title>
+  
+  <!-- Favicon using SVG leaf icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 5 C25 25 15 55 20 85 C45 90 75 80 90 50 C95 25 75 10 50 5 Z' fill='%232d6a4f'/><path d='M50 5 C45 35 45 65 20 85' stroke='%2374c69d' stroke-width='4' fill='none'/></svg>">
+  
+  <!-- Preconnect to Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Nature Background (floating leaves & organic soft sunlit glow) -->
+  <div class="ambient-background" aria-hidden="true">
+    <div class="glow-orb glow-top-right"></div>
+    <div class="glow-orb glow-bottom-left"></div>
+    <div class="glow-orb glow-center"></div>
+    
+    <!-- Lightweight floating leaf particles -->
+    <div class="floating-particle leaf-1">🍃</div>
+    <div class="floating-particle leaf-2">🌱</div>
+    <div class="floating-particle leaf-3">🌿</div>
+    <div class="floating-particle leaf-4">🌾</div>
+    <div class="floating-particle leaf-5">🍃</div>
+  </div>
+
+  <!-- Top Announcement Bar (Offline status & Kisan Helpline) -->
+  <aside class="top-announcement" aria-label="Agricultural helpline">
+    <div class="container announcement-content">
+      <div class="announcement-left">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        <span id="txt-kisan-portal" data-key="kisan_portal">Farmer Friendly AI Platform • 100% Free &amp; Private</span>
+      </div>
+      <div class="announcement-right">
+        <span class="helpline-badge">📞 <span data-key="helpline_label">Kisan Call Center:</span> <strong>1800-180-1551</strong></span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Sticky Glassmorphic Navigation Bar -->
+  <header class="main-header">
+    <nav class="container navbar glass-navbar" aria-label="Main Navigation">
+      <!-- Logo -->
+      <a href="#hero" class="brand-logo" aria-label="LeafCare AI Home">
+        <div class="logo-icon-wrapper" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none" class="brand-svg">
+            <path d="M20 3C10 11 6 23 8 35C18 37 30 33 36 21C38 11 30 5 20 3Z" fill="url(#leafGrad)"/>
+            <path d="M20 3C18 15 18 27 8 35" stroke="#a7f3d0" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="28" cy="15" r="3" fill="#ecfdf5" opacity="0.8"/>
+            <path d="M28 15L23 21" stroke="#ecfdf5" stroke-width="1.5" stroke-dasharray="2 2"/>
+            <defs>
+              <linearGradient id="leafGrad" x1="8" y1="3" x2="36" y2="35" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#2d6a4f"/>
+                <stop offset="1" stop-color="#1b4332"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">LeafCare <span class="ai-pill">AI</span></span>
+          <span class="brand-tagline" data-key="brand_tagline">Smart Crop Doctor</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links" role="menubar">
+        <li role="none"><a href="#hero" class="nav-link active" role="menuitem" data-key="nav_home">Home</a></li>
+        <li role="none"><a href="#detect" class="nav-link" role="menuitem" data-key="nav_detect">Detect Disease</a></li>
+        <li role="none"><a href="#history" class="nav-link" role="menuitem" data-key="nav_history">Recent Scans</a></li>
+        <li role="none"><a href="#prevention" class="nav-link" role="menuitem" data-key="nav_prevention">Prevention Tips</a></li>
+        <li role="none"><a href="#guide" class="nav-link" role="menuitem" data-key="nav_guide">Crop Library</a></li>
+      </ul>
+
+      <!-- Right Controls: Language Selector, Share, Export, Mobile Menu Button -->
+      <div class="nav-actions">
+        <!-- Language Switcher -->
+        <div class="lang-selector-wrapper">
+          <label for="languageSelect" class="visually-hidden">Choose Language</label>
+          <span class="globe-icon" aria-hidden="true">🌐</span>
+          <select id="languageSelect" class="lang-select" aria-label="Select Language">
+            <option value="en" selected>English</option>
+            <option value="hi">हिंदी (Hindi)</option>
+            <option value="mr">मराठी (Marathi)</option>
+          </select>
+        </div>
+
+        <!-- Quick Share Header Button -->
+        <button id="btnHeaderShare" class="icon-btn" aria-label="Share LeafCare AI with fellow farmers" title="Share with farmers">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobileMenuToggle" class="mobile-toggle" aria-expanded="false" aria-controls="mobileNav" aria-label="Toggle navigation menu">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Drawer Navigation -->
+    <div id="mobileNav" class="mobile-drawer" aria-hidden="true">
+      <div class="mobile-drawer-header">
+        <span class="drawer-title" data-key="mobile_menu_title">Menu &amp; Quick Actions</span>
+        <button id="closeMobileNav" class="close-drawer-btn" aria-label="Close menu">&times;</button>
+      </div>
+      <ul class="mobile-nav-list">
+        <li><a href="#hero" class="mobile-nav-item" data-key="nav_home">🏠 Home</a></li>
+        <li><a href="#detect" class="mobile-nav-item" data-key="nav_detect">📷 Detect Disease</a></li>
+        <li><a href="#history" class="mobile-nav-item" data-key="nav_history">📜 Recent Scans</a></li>
+        <li><a href="#prevention" class="mobile-nav-item" data-key="nav_prevention">🛡️ Prevention Tips</a></li>
+        <li><a href="#guide" class="mobile-nav-item" data-key="nav_guide">🌾 Crop Protection Guide</a></li>
+      </ul>
+      <div class="mobile-drawer-footer">
+        <p class="drawer-help-text" data-key="drawer_help">Free tool built for agricultural community</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <!-- ========================================== -->
+    <!-- 2. HERO SECTION                           -->
+    <!-- ========================================== -->
+    <section id="hero" class="hero-section">
+      <div class="container hero-container">
+        <!-- Hero Text -->
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-icon">🌿</span>
+            <span data-key="hero_badge_text">AI Powered Leaf Pathology</span>
+          </div>
+
+          <h1 class="hero-title" data-key="hero_title">
+            Protect Your Crops <br>
+            <span class="title-highlight">with Smart AI</span>
+          </h1>
+
+          <p class="hero-subtitle" data-key="hero_subtitle">
+            Take a photo of your plant leaf and get an instant disease prediction with practical prevention guidance. Simple, fast, and designed for every farmer.
+          </p>
+
+          <!-- Large Farmer-Friendly CTA Buttons (52px+ touch height) -->
+          <div class="hero-cta-group">
+            <a href="#detect" class="btn btn-primary btn-hero btn-lg" id="heroDetectBtn">
+              <span class="btn-icon">📷</span>
+              <span data-key="cta_detect">Detect Disease</span>
+            </a>
+            <button class="btn btn-secondary btn-hero btn-lg" id="heroUploadBtn">
+              <span class="btn-icon">📁</span>
+              <span data-key="cta_upload">Upload from Gallery</span>
+            </button>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="trust-container">
+            <div class="trust-pill">
+              <span class="check-icon">✓</span>
+              <span data-key="trust_simple">Simple &amp; Fast</span>
+            </div>
+            <div class="trust-pill">
+              <span class="check-icon">✓</span>
+              <span data-key="trust_farmer">Farmer Friendly</span>
+            </div>
+            <div class="trust-pill">
+              <span class="check-icon">✓</span>
+              <span data-key="trust_free">100% Free Service</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Visual (Interactive Glass Leaf Card on Desktop) -->
+        <div class="hero-visual">
+          <div class="glass-card hero-preview-card">
+            <!-- Simulated AI Leaf Analysis Widget -->
+            <div class="leaf-card-header">
+              <div class="scanner-live-tag">
+                <span class="live-dot"></span>
+                <span data-key="live_scanner">AI Leaf Doctor</span>
+              </div>
+              <span class="accuracy-badge">98.4% Accuracy</span>
+            </div>
+
+            <div class="hero-image-frame">
+              <img src="https://images.unsplash.com/photo-1592417817098-8f3d6ef23886?auto=format&fit=crop&w=700&q=80" 
+                   alt="Close up healthy and diseased tomato leaves" 
+                   class="hero-leaf-img" 
+                   loading="eager"
+                   onerror="this.src='data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'><rect width=\'400\' height=\'300\' fill=\'%232d6a4f\'/><text x=\'50%25\' y=\'50%25\' fill=\'%23fff\' font-size=\'20\' font-family=\'sans-serif\' text-anchor=\'middle\'>Tomato Leaf Sample</text></svg>'">
+              <!-- Animated Scanning Laser Line -->
+              <div class="hero-laser-line" aria-hidden="true"></div>
+              
+              <!-- Bounding Box Overlay Marker -->
+              <div class="ai-box-marker" style="top: 38%; left: 35%; width: 36%; height: 32%;">
+                <span class="box-tag">Early Blight: 94%</span>
+              </div>
+            </div>
+
+            <div class="hero-diagnostic-mini">
+              <div class="mini-diag-left">
+                <span class="mini-crop-label" data-key="crop_detected">Crop: <strong>Tomato</strong></span>
+                <span class="mini-disease-name" data-key="sample_condition">Condition: <strong>Early Blight</strong></span>
+              </div>
+              <div class="mini-diag-right">
+                <span class="status-badge badge-warning" data-key="status_attention">Needs Attention</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 3. MAIN DISEASE DETECTION SECTION          -->
+    <!-- ========================================== -->
+    <section id="detect" class="detect-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag" data-key="detect_badge">Instant AI Diagnosis</span>
+          <h2 class="section-title" data-key="detect_heading">Check Your Plant</h2>
+          <p class="section-subtitle" data-key="detect_desc">
+            Capture a fresh leaf photo in your field or upload an image from your gallery.
+          </p>
+        </div>
+
+        <!-- Detection Central Glass Card -->
+        <div class="glass-card detect-card">
+          <!-- Step 1: Input Choices -->
+          <div class="input-options-container" id="inputOptionsContainer">
+            <div class="detect-options-grid">
+              <!-- Camera Option Tile -->
+              <button type="button" class="option-tile" id="btnOpenCamera" aria-label="Open camera to take photo of plant leaf">
+                <div class="tile-icon-box camera-box">
+                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                </div>
+                <h3 class="tile-title" data-key="opt_camera_title">📷 Take Photo</h3>
+                <p class="tile-desc" data-key="opt_camera_desc">Use phone camera in the field</p>
+                <span class="tile-btn-hint" data-key="opt_camera_cta">Open Camera &rarr;</span>
+              </button>
+
+              <!-- Gallery Upload Tile -->
+              <div class="option-tile upload-dropzone" id="dropzoneTile" tabindex="0" role="button" aria-label="Upload photo from gallery or drag and drop image here">
+                <div class="tile-icon-box upload-box">
+                  <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                  </svg>
+                </div>
+                <h3 class="tile-title" data-key="opt_upload_title">📁 Upload from Gallery</h3>
+                <p class="tile-desc" data-key="opt_upload_desc">Select image or drag &amp; drop</p>
+                <span class="tile-btn-hint" data-key="opt_upload_cta">Choose Photo &rarr;</span>
+                
+                <!-- Hidden file inputs -->
+                <input type="file" id="fileInput" accept="image/*" class="visually-hidden" aria-hidden="true">
+                <input type="file" id="cameraInputFallback" accept="image/*" capture="environment" class="visually-hidden" aria-hidden="true">
+              </div>
+            </div>
+
+            <!-- Pre-loaded Test Samples for Immediate Testing -->
+            <div class="test-samples-area">
+              <div class="test-samples-header">
+                <span class="flask-icon">🧪</span>
+                <span data-key="sample_tester_label"><strong>No leaf photo right now?</strong> Try these realistic sample leaves:</span>
+              </div>
+              <div class="sample-pills-row" role="group" aria-label="Sample test leaves">
+                <button type="button" class="sample-pill-btn" data-sample="tomato_early_blight">
+                  🍅 <span data-key="sample_tomato">Tomato: Early Blight</span>
+                </button>
+                <button type="button" class="sample-pill-btn" data-sample="potato_late_blight">
+                  🥔 <span data-key="sample_potato">Potato: Late Blight</span>
+                </button>
+                <button type="button" class="sample-pill-btn" data-sample="apple_scab">
+                  🍏 <span data-key="sample_apple">Apple: Apple Scab</span>
+                </button>
+                <button type="button" class="sample-pill-btn" data-sample="corn_healthy">
+                  🌽 <span data-key="sample_corn">Healthy Maize (Corn)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2: Image Preview Frame & Analyze Controls (Shown once an image is chosen) -->
+          <div class="preview-wrapper" id="previewWrapper" style="display: none;">
+            <div class="preview-card-inner">
+              <div class="preview-header">
+                <div class="preview-meta">
+                  <span class="leaf-icon-badge">🍃</span>
+                  <div>
+                    <h4 class="preview-title" data-key="preview_heading">Selected Leaf Image</h4>
+                    <span class="preview-filename" id="previewFilename">camera_photo.jpg</span>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" id="btnRetake" data-key="btn_retake">
+                  🔄 Choose Another
+                </button>
+              </div>
+
+              <!-- Main Image Preview Window -->
+              <div class="image-preview-frame" id="imagePreviewFrame">
+                <img id="imagePreview" src="" alt="Selected plant leaf preview" class="preview-img">
+                
+                <!-- Animated Scanning Laser Bar during analysis -->
+                <div class="scan-laser-beam" id="scanLaserBeam" style="display: none;" aria-hidden="true"></div>
+                
+                <!-- Scanning Step Status Badge -->
+                <div class="scan-progress-overlay" id="scanProgressOverlay" style="display: none;">
+                  <div class="spinner-circle"></div>
+                  <div class="scan-step-text" id="scanStepText" data-key="scanning_step_1">
+                    Analyzing leaf structure...
+                  </div>
+                  <div class="scan-substep-text" data-key="scanning_model_hint">
+                    Checking against 50,000+ agricultural disease patterns
+                  </div>
+                </div>
+              </div>
+
+              <!-- Action Bar -->
+              <div class="preview-action-bar">
+                <p class="guidance-tip">
+                  💡 <span data-key="preview_advice_tip">For best accuracy, ensure the leaf is clearly in focus with good sunlight.</span>
+                </p>
+                <button type="button" class="btn btn-primary btn-lg btn-analyze" id="btnAnalyzePlant">
+                  <span class="btn-spinner" id="btnSpinner" style="display: none;"></span>
+                  <span class="analyze-icon" id="analyzeIcon">🔍</span>
+                  <span id="analyzeBtnText" data-key="btn_analyze">Analyze Plant</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 4. PREDICTION RESULT CARD (Hidden initially)-->
+        <!-- ========================================== -->
+        <div class="prediction-result-wrapper" id="predictionResultWrapper" style="display: none;" tabindex="-1">
+          <div class="glass-card result-card">
+            <!-- Result Top Banner -->
+            <div class="result-banner">
+              <div class="banner-title-group">
+                <span class="pulse-leaf-icon">🌿</span>
+                <div>
+                  <span class="result-supertitle" data-key="result_supertitle">AI Diagnosis Report</span>
+                  <h3 class="result-title" data-key="result_title">Plant Health Result</h3>
+                </div>
+              </div>
+              <div class="banner-actions">
+                <!-- Audio Speech Readout Button for Farmers -->
+                <button type="button" class="btn-audio-speak" id="btnSpeakResult" title="Listen to diagnosis in your language" aria-label="Listen to diagnosis aloud">
+                  <span class="speaker-icon">🔊</span>
+                  <span class="speak-label" data-key="btn_listen">Listen (आवाज)</span>
+                </button>
+                <span class="status-badge" id="resultStatusBadge">Needs Attention</span>
+              </div>
+            </div>
+
+            <!-- Result Main Grid: Left gauges & metrics, Right recommendations -->
+            <div class="result-grid">
+              <!-- Left Column: Metrics & Severity -->
+              <div class="result-metrics-col">
+                <!-- Crop & Disease Headline Card -->
+                <div class="metric-card crop-condition-box">
+                  <div class="crop-id-row">
+                    <span class="metric-label" data-key="res_label_plant">Identified Crop:</span>
+                    <strong class="crop-name-value" id="resCropName">Tomato (Solanum lycopersicum)</strong>
+                  </div>
+                  <div class="disease-id-row">
+                    <span class="metric-label" data-key="res_label_disease">Detected Condition:</span>
+                    <strong class="disease-name-value" id="resDiseaseName">Early Blight</strong>
+                    <span class="pathogen-type" id="resPathogenType">(Alternaria solani • Fungal)</span>
+                  </div>
+                </div>
+
+                <!-- Confidence Gauge & Severity Level -->
+                <div class="gauge-and-severity-row">
+                  <!-- Circular Confidence Indicator -->
+                  <div class="metric-card confidence-gauge-card">
+                    <span class="metric-label" data-key="res_label_confidence">Confidence Score</span>
+                    <div class="circular-gauge-container">
+                      <svg class="progress-ring" width="120" height="120" viewBox="0 0 120 120" aria-label="Prediction Confidence">
+                        <circle class="progress-ring-bg" stroke="rgba(45, 106, 79, 0.15)" stroke-width="10" fill="transparent" r="48" cx="60" cy="60"/>
+                        <circle class="progress-ring-circle" id="confidenceRing" stroke="#2d6a4f" stroke-width="10" stroke-linecap="round" fill="transparent" r="48" cx="60" cy="60"/>
+                      </svg>
+                      <div class="gauge-center-text">
+                        <span class="gauge-value" id="resConfidenceVal">94%</span>
+                        <span class="gauge-caption" data-key="gauge_match">Match</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Severity Meter -->
+                  <div class="metric-card severity-meter-card">
+                    <span class="metric-label" data-key="res_label_severity">Disease Severity</span>
+                    <div class="severity-bars" id="severityBars">
+                      <div class="sev-step sev-low active" title="Low / Minor">
+                        <span class="sev-bar"></span>
+                        <span class="sev-text" data-key="sev_mild">Mild</span>
+                      </div>
+                      <div class="sev-step sev-med active" title="Moderate">
+                        <span class="sev-bar"></span>
+                        <span class="sev-text" data-key="sev_moderate">Moderate</span>
+                      </div>
+                      <div class="sev-step sev-high" title="High Risk">
+                        <span class="sev-bar"></span>
+                        <span class="sev-text" data-key="sev_severe">Severe</span>
+                      </div>
+                    </div>
+                    <p class="severity-desc-text" id="resSeverityDesc">
+                      Symptoms visible on lower foliage. Timely treatment will prevent spread to fruit.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Farmer Explanation Box (Simple words) -->
+                <div class="metric-card explanation-box">
+                  <h4 class="box-heading">
+                    <span class="box-icon">🔍</span>
+                    <span data-key="res_heading_symptoms">Observed Leaf Symptoms</span>
+                  </h4>
+                  <p class="simple-explanation-text" id="resExplanationText">
+                    Your tomato leaf shows small brown-to-black spots with concentric rings (target pattern) on older leaves. Lower foliage is starting to yellow.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Right Column: Immediate Farmer Actions & Guidance -->
+              <div class="result-actions-col">
+                <div class="recommendations-container">
+                  <div class="recs-header">
+                    <span class="recs-icon">🚨</span>
+                    <div>
+                      <h4 class="recs-title" data-key="res_action_heading">Recommended Immediate Farmer Action</h4>
+                      <p class="recs-subtitle" data-key="res_action_sub">Practical, organic &amp; field-tested steps to save your harvest</p>
+                    </div>
+                  </div>
+
+                  <!-- Step by Step Checklist for Farmers -->
+                  <div class="action-steps-list" id="resActionStepsList">
+                    <!-- Populated dynamically by script.js -->
+                    <div class="action-step-item">
+                      <div class="step-num">1</div>
+                      <div class="step-detail">
+                        <strong class="step-title">Prune &amp; Safely Dispose Leaves</strong>
+                        <p class="step-body">Cut heavily spotted leaves immediately with clean shears. Burn or bury them outside the field. Never throw into compost.</p>
+                      </div>
+                    </div>
+                    <div class="action-step-item">
+                      <div class="step-num">2</div>
+                      <div class="step-detail">
+                        <strong class="step-title">Stop Overhead Watering</strong>
+                        <p class="step-body">Water only at soil level using drip or channel irrigation. Wet leaves allow fungus spores to multiply rapidly.</p>
+                      </div>
+                    </div>
+                    <div class="action-step-item">
+                      <div class="step-num">3</div>
+                      <div class="step-detail">
+                        <strong class="step-title">Apply Organic Spray / Bio-fungicide</strong>
+                        <p class="step-body">Spray 5% Neem Seed Kernel Extract (NSKE) or Copper Oxychloride (2.5g per liter of water) early morning before heat peaks.</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Organic vs Chemical Treatment Tabs -->
+                  <div class="treatment-guide-pills">
+                    <div class="treat-pill organic-pill">
+                      <span class="treat-badge">🌱 Organic Remedy</span>
+                      <p id="resOrganicRemedy">Trichoderma viride @ 5g/liter root drenching + 5% Neem oil spray every 7 days.</p>
+                    </div>
+                    <div class="treat-pill chemical-pill">
+                      <span class="treat-badge">🧪 Standard Remedy</span>
+                      <p id="resChemicalRemedy">Mancozeb 75% WP @ 2g/liter or Chlorothalonil spray on dry foliage.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Button Row: Share, Export, Tips, Reset -->
+                <div class="result-btn-cluster">
+                  <button type="button" class="btn btn-secondary btn-action-lg" id="btnShareResult">
+                    <span class="btn-icon">📤</span>
+                    <span data-key="btn_share_result">Share on WhatsApp</span>
+                  </button>
+
+                  <button type="button" class="btn btn-secondary btn-action-lg" id="btnExportReport">
+                    <span class="btn-icon">📄</span>
+                    <span data-key="btn_export_report">Export Report</span>
+                  </button>
+
+                  <a href="#prevention" class="btn btn-secondary btn-action-lg" id="btnGoToTips">
+                    <span class="btn-icon">🌿</span>
+                    <span data-key="btn_view_prevention">Prevention Tips</span>
+                  </a>
+
+                  <button type="button" class="btn btn-primary btn-action-lg" id="btnCheckAnother">
+                    <span class="btn-icon">🔄</span>
+                    <span data-key="btn_check_another">Check Another Leaf</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 5. PREVENTION / TREATMENT TIPS SECTION     -->
+    <!-- ========================================== -->
+    <section id="prevention" class="prevention-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag" data-key="prev_badge">Field Best Practices</span>
+          <h2 class="section-title" data-key="prev_heading">How to Protect Your Crop</h2>
+          <p class="section-subtitle" data-key="prev_subtitle">
+            Follow these essential agronomic practices to stop disease outbreaks before they harm your yield.
+          </p>
+        </div>
+
+        <!-- 6 Large Glassmorphism Cards for Farmers -->
+        <div class="tips-grid">
+          <!-- Tip 1 -->
+          <article class="glass-card tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-icon-circle green-bg">🌱</span>
+              <span class="tip-category" data-key="tip1_cat">Crop Care</span>
+            </div>
+            <h3 class="tip-title" data-key="tip1_title">Certified Seeds &amp; Crop Rotation</h3>
+            <p class="tip-body" data-key="tip1_desc">
+              Always sow certified disease-free seeds. Rotate Solanaceous crops (Tomato, Potato, Chilli) with legumes or cereals every 2–3 seasons to break pathogen lifecycles in the soil.
+            </p>
+            <div class="tip-farmer-rule">
+              <span class="rule-icon">💡</span>
+              <span data-key="tip1_rule">Golden Rule: Never plant tomato after potato in the same field.</span>
+            </div>
+          </article>
+
+          <!-- Tip 2 -->
+          <article class="glass-card tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-icon-circle blue-bg">💧</span>
+              <span class="tip-category" data-key="tip2_cat">Water Management</span>
+            </div>
+            <h3 class="tip-title" data-key="tip2_title">Smart Drip &amp; Morning Irrigation</h3>
+            <p class="tip-body" data-key="tip2_desc">
+              Irrigate crops at soil level using drip systems. Water early in the morning so incidental leaf moisture evaporates quickly with the morning sun, preventing fungal spores from germinating.
+            </p>
+            <div class="tip-farmer-rule">
+              <span class="rule-icon">💡</span>
+              <span data-key="tip2_rule">Golden Rule: Avoid overhead sprinkler watering during cloudy weather.</span>
+            </div>
+          </article>
+
+          <!-- Tip 3 -->
+          <article class="glass-card tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-icon-circle amber-bg">🍃</span>
+              <span class="tip-category" data-key="tip3_cat">Leaf Management</span>
+            </div>
+            <h3 class="tip-title" data-key="tip3_title">Bottom Pruning &amp; Good Airflow</h3>
+            <p class="tip-body" data-key="tip3_desc">
+              Prune all leaves within 20 cm (8 inches) of the ground once plants reach 1 foot tall. Clean lower stems prevent rain-splash from kicking fungal spores from wet soil onto leaves.
+            </p>
+            <div class="tip-farmer-rule">
+              <span class="rule-icon">💡</span>
+              <span data-key="tip3_rule">Golden Rule: Disinfect pruning shears in 70% alcohol or soap between plants.</span>
+            </div>
+          </article>
+
+          <!-- Tip 4 -->
+          <article class="glass-card tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-icon-circle gold-bg">🌾</span>
+              <span class="tip-category" data-key="tip4_cat">Field Hygiene</span>
+            </div>
+            <h3 class="tip-title" data-key="tip4_title">Weed Eradication &amp; Clean Mulch</h3>
+            <p class="tip-body" data-key="tip4_desc">
+              Keep bunds and field borders free from wild nightshade weeds which act as wild disease hosts. Spread dry straw mulch around plant beds to shield lower foliage from direct soil contact.
+            </p>
+            <div class="tip-farmer-rule">
+              <span class="rule-icon">💡</span>
+              <span data-key="tip4_rule">Golden Rule: Deep-plow your field in summer to expose spores to heat.</span>
+            </div>
+          </article>
+
+          <!-- Tip 5 -->
+          <article class="glass-card tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-icon-circle purple-bg">🔍</span>
+              <span class="tip-category" data-key="tip5_cat">Regular Monitoring</span>
+            </div>
+            <h3 class="tip-title" data-key="tip5_title">Bi-Weekly Morning Field Walks</h3>
+            <p class="tip-body" data-key="tip5_desc">
+              Inspect underside of older leaves twice a week between 7 AM and 9 AM. Early detection allows low-cost organic remedies to stop diseases before they damage flowers and fruit.
+            </p>
+            <div class="tip-farmer-rule">
+              <span class="rule-icon">💡</span>
+              <span data-key="tip5_rule">Golden Rule: Pay extra attention after rainy spells or sudden humid nights.</span>
+            </div>
+          </article>
+
+          <!-- Tip 6 -->
+          <article class="glass-card tip-card">
+            <div class="tip-icon-header">
+              <span class="tip-icon-circle green-bg">🛡️</span>
+              <span class="tip-category" data-key="tip6_cat">Bio-Protection</span>
+            </div>
+            <h3 class="tip-title" data-key="tip6_title">Preventative Bio-Agents &amp; Neem</h3>
+            <p class="tip-body" data-key="tip6_desc">
+              Treat seeds with Trichoderma viride or Pseudomonas fluorescens before sowing. Spray 5% cold-pressed Neem oil preventatively every 10–14 days during high humidity periods.
+            </p>
+            <div class="tip-farmer-rule">
+              <span class="rule-icon">💡</span>
+              <span data-key="tip6_rule">Golden Rule: Bio-agents work best as preventatives before disease appears.</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 6. SCAN HISTORY ("RECENT CHECKS")          -->
+    <!-- ========================================== -->
+    <section id="history" class="history-section">
+      <div class="container">
+        <div class="section-header-flex">
+          <div>
+            <span class="section-tag" data-key="hist_badge">Saved In Browser</span>
+            <h2 class="section-title" data-key="hist_heading">Recent Checks</h2>
+            <p class="section-subtitle" data-key="hist_desc">Your previous leaf diagnoses saved locally on this device.</p>
+          </div>
+          <div class="history-controls">
+            <button type="button" class="btn btn-outline btn-sm" id="btnClearHistory" data-key="btn_clear_hist">
+              🗑️ Clear History
+            </button>
+          </div>
+        </div>
+
+        <!-- History Cards List -->
+        <div class="history-grid" id="historyGrid" aria-live="polite">
+          <!-- Rendered dynamically by script.js -->
+        </div>
+
+        <!-- Empty History State -->
+        <div class="empty-history-state" id="emptyHistoryState" style="display: none;">
+          <span class="empty-icon">🍃</span>
+          <h3 data-key="hist_empty_title">No checks saved yet</h3>
+          <p data-key="hist_empty_desc">Scanned leaves will automatically appear here for your records.</p>
+          <a href="#detect" class="btn btn-primary btn-sm" data-key="cta_detect">Scan a Leaf Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 7. PHOTO GALLERY / RECENT SCANS            -->
+    <!-- ========================================== -->
+    <section id="gallery" class="gallery-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag" data-key="gal_badge">Visual Field Archive</span>
+          <h2 class="section-title" data-key="gal_heading">Analyzed Leaf Gallery</h2>
+          <p class="section-subtitle" data-key="gal_desc">
+            Tap on any photo to inspect leaf symptoms and confidence ratings in detail.
+          </p>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid">
+          <!-- Dynamic / pre-filled gallery cards -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 10. CROP PROTECTION GUIDE / LIBRARY        -->
+    <!-- ========================================== -->
+    <section id="guide" class="guide-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <span class="section-tag" data-key="guide_badge">Farmer Handbook</span>
+          <h2 class="section-title" data-key="guide_heading">Crop Protection Guide</h2>
+          <p class="section-subtitle" data-key="guide_desc">
+            Comprehensive field symptoms, organic solutions, and prevention tips for common regional crops.
+          </p>
+        </div>
+
+        <!-- Category Filter Chips -->
+        <div class="filter-chips-row" role="tablist" aria-label="Crop Categories">
+          <button type="button" class="chip active" data-filter="all" role="tab" aria-selected="true" data-key="filter_all">All Crops</button>
+          <button type="button" class="chip" data-filter="vegetables" role="tab" aria-selected="false" data-key="filter_veg">Vegetables</button>
+          <button type="button" class="chip" data-filter="fruits" role="tab" aria-selected="false" data-key="filter_fruit">Fruits</button>
+          <button type="button" class="chip" data-filter="cereals" role="tab" aria-selected="false" data-key="filter_cereal">Cereals</button>
+          <button type="button" class="chip" data-filter="cash" role="tab" aria-selected="false" data-key="filter_cash">Cash Crops</button>
+        </div>
+
+        <!-- Crop Cards Grid -->
+        <div class="crop-guide-grid" id="cropGuideGrid">
+          <!-- Populated by script.js -->
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================== -->
+  <!-- FOOTER                                     -->
+  <!-- ========================================== -->
+  <footer class="main-footer">
+    <div class="container footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <span class="logo-leaf">🌱</span>
+            <span class="footer-brand-title">LeafCare AI</span>
+          </div>
+          <p class="footer-desc" data-key="footer_mission">
+            Empowering farmers with instant, trustworthy plant disease diagnosis and sustainable crop protection guidance.
+          </p>
+        </div>
+
+        <div class="footer-links-group">
+          <h4 class="footer-col-title" data-key="footer_quick_links">Quick Links</h4>
+          <ul class="footer-nav">
+            <li><a href="#hero" data-key="nav_home">Home</a></li>
+            <li><a href="#detect" data-key="nav_detect">Detect Disease</a></li>
+            <li><a href="#history" data-key="nav_history">Recent Scans</a></li>
+            <li><a href="#prevention" data-key="nav_prevention">Prevention Tips</a></li>
+            <li><a href="#guide" data-key="nav_guide">Crop Library</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-group">
+          <h4 class="footer-col-title" data-key="footer_helplines">Farmer Helplines</h4>
+          <p class="helpline-item">🌾 <strong>National Kisan Portal:</strong> 1800-180-1551</p>
+          <p class="helpline-item">🚜 <strong>Agri Market Assistance:</strong> 1800-270-0224</p>
+          <p class="helpline-item">📱 <strong>WhatsApp Support:</strong> Free Agri Updates</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="copyright">&copy; 2026 LeafCare AI • Dedicated to hardworking farmers everywhere.</p>
+        <p class="tech-note" data-key="footer_disclaimer">
+          Advisory tool: Always consult your local Krishi Vigyan Kendra (KVK) officer for regional chemical dosage advice.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================== -->
+  <!-- MOBILE BOTTOM NAVIGATION (Field-friendly)  -->
+  <!-- ========================================== -->
+  <nav class="mobile-bottom-bar" aria-label="Mobile Navigation">
+    <a href="#hero" class="bottom-bar-item active">
+      <span class="bottom-icon">🏠</span>
+      <span class="bottom-label" data-key="nav_home">Home</span>
+    </a>
+    <a href="#detect" class="bottom-bar-item scan-center-btn" id="mobileScanTab">
+      <div class="scan-circle-glow">
+        <span class="bottom-icon-lg">📷</span>
+      </div>
+      <span class="bottom-label" data-key="nav_detect">Scan</span>
+    </a>
+    <a href="#history" class="bottom-bar-item">
+      <span class="bottom-icon">📜</span>
+      <span class="bottom-label" data-key="nav_history">History</span>
+    </a>
+    <a href="#guide" class="bottom-bar-item">
+      <span class="bottom-icon">🌾</span>
+      <span class="bottom-label" data-key="nav_guide">Guide</span>
+    </a>
+  </nav>
+
+  <!-- ========================================== -->
+  <!-- MODALS                                     -->
+  <!-- ========================================== -->
+
+  <!-- 1. Live Camera Modal Viewfinder -->
+  <div class="modal-backdrop" id="cameraModal" role="dialog" aria-modal="true" aria-labelledby="cameraModalTitle" style="display: none;">
+    <div class="glass-card camera-modal-card">
+      <div class="camera-modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">📷</span>
+          <h3 id="cameraModalTitle" data-key="cam_modal_title">Take Plant Leaf Photo</h3>
+        </div>
+        <button type="button" class="btn-close-modal" id="btnCloseCamera" aria-label="Close camera">&times;</button>
+      </div>
+
+      <!-- Live Video Viewfinder -->
+      <div class="camera-viewfinder-frame">
+        <video id="cameraVideo" autoplay playsinline muted></video>
+        <canvas id="cameraCanvas" style="display: none;"></canvas>
+
+        <!-- Viewfinder Reticle Guide -->
+        <div class="viewfinder-guide" aria-hidden="true">
+          <div class="corner corner-tl"></div>
+          <div class="corner corner-tr"></div>
+          <div class="corner corner-bl"></div>
+          <div class="corner corner-br"></div>
+          <span class="guide-text" data-key="cam_guide_text">Align leaf inside frame</span>
+        </div>
+
+        <!-- Camera Loading or Error Notice -->
+        <div class="camera-status-overlay" id="cameraStatusOverlay" style="display: none;">
+          <p id="cameraStatusMessage">Initializing camera...</p>
+        </div>
+      </div>
+
+      <!-- Camera Control Bar -->
+      <div class="camera-controls-bar">
+        <button type="button" class="btn-cam-switch" id="btnFlipCamera" aria-label="Flip camera" title="Switch front/back camera">
+          🔄 <span data-key="cam_flip">Flip</span>
+        </button>
+
+        <button type="button" class="btn-shutter-capture" id="btnShutter" aria-label="Capture photo">
+          <span class="shutter-inner"></span>
+        </button>
+
+        <button type="button" class="btn-cam-cancel" id="btnCancelCamera" data-key="cam_cancel">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Detail / Gallery Inspection Modal -->
+  <div class="modal-backdrop" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailModalTitle" style="display: none;">
+    <div class="glass-card detail-modal-card">
+      <div class="detail-modal-header">
+        <h3 id="detailModalTitle">Tomato Early Blight Inspection</h3>
+        <button type="button" class="btn-close-modal" id="btnCloseDetail">&times;</button>
+      </div>
+      <div class="detail-modal-body" id="detailModalBody">
+        <!-- Content injected by script.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Clear History Confirmation Modal -->
+  <div class="modal-backdrop" id="clearConfirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" style="display: none;">
+    <div class="glass-card confirm-modal-card">
+      <h3 id="confirmTitle" data-key="clear_confirm_title">Clear Scan History?</h3>
+      <p data-key="clear_confirm_desc">This will remove all saved scans from this browser. This cannot be undone.</p>
+      <div class="confirm-btns">
+        <button type="button" class="btn btn-outline" id="btnCancelClear" data-key="btn_cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" id="btnConfirmClear" data-key="btn_confirm_delete">Yes, Clear All</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" role="status" aria-live="polite"></div>
+
+  <!-- JavaScript Application Bundle -->
+  <script src="script.js"></script>
+</body>
+</html>
